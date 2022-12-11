@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * <h1>Contacts App</h1>
  * With this app you can create, view, update and delete contacts.
- * It saves new contacts in a folder. It used Personal ID as text filename.
+ * It saves new contacts in a folder. It uses Personal ID as text filename.
  * <p>
  * 
  * 
