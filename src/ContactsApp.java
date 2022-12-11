@@ -9,7 +9,24 @@ import java.util.concurrent.TimeUnit;
 import java.util.Map;
 import java.util.HashMap;
 
-class ContactsApp {
+/**
+ * <h1>Contacts App</h1>
+ * With this app you can create, view, update and delete contacts.
+ * It saves new contacts in a folder. It used Personal ID as text filename.
+ * <p>
+ * 
+ * 
+ * @author Killezz
+ * @version 1.0
+ */
+
+public class ContactsApp {
+    /**
+     * Main method which makes use of all other methods.
+     * 
+     * @param args Unused.
+     * @exception InterruptedException On error.
+     */
     public static void main(String[] args) {
         try {
             new File("./contacts/temp").mkdirs();
@@ -59,6 +76,15 @@ class ContactsApp {
         }
     }
 
+    /**
+     * View Contact method searches the directory and lists
+     * all contacts inside of it.
+     * 
+     * @param sc         System input scanner.
+     * @param deleteMode Boolean value. If set to true selected contact will be
+     *                   deleted.
+     * @exception InterruptedException On error.
+     */
     public static void viewContacts(Scanner sc, boolean deleteMode) {
         try {
             boolean goBack = false;
@@ -96,7 +122,7 @@ class ContactsApp {
                 String chosenNum = sc.nextLine();
                 switch (chosenNum.strip()) {
                     case ":back":
-                        goBack = true;
+                        main(null);
                         break;
                     case ":quit":
                         System.out.print("Quitting.");
@@ -123,6 +149,16 @@ class ContactsApp {
         }
     }
 
+    /**
+     * Open Contact method opens contact file and reads it. It prints all data
+     * that the .txt file is containing.
+     * 
+     * @param sc              System input scanner.
+     * @param contactFilename String filename. Opens that specific file and reads
+     *                        it.
+     * @exception IOException          On read file error.
+     * @exception InterruptedException On error.
+     */
     public static void openContact(Scanner sc, String contactFilename) {
         try {
             boolean goBack = false;
@@ -137,6 +173,7 @@ class ContactsApp {
                 br.close();
                 System.out.println("\n:back - Go back");
                 System.out.println(":edit - Edit values");
+                System.out.println(":home - Go home");
                 System.out.println(":quit - Quit");
                 System.out.print("\nSelect: ");
                 String chosenNum = sc.nextLine();
@@ -147,6 +184,8 @@ class ContactsApp {
                     case ":edit":
                         editContact(sc, contactFilename, false);
                         break;
+                    case ":home":
+                        main(null);
                     case ":quit":
                         System.out.print("Quitting.");
                         System.exit(0);
@@ -162,6 +201,20 @@ class ContactsApp {
         }
     }
 
+    /**
+     * Edit Contact method is used for editing the contact .txt file. It is
+     * also used when creating new a new contact and new contact gets saved in
+     * temporary folder until user enters command to save it.
+     * 
+     * @param sc              System input scanner.
+     * @param contactFilename String filename. Opens that specific file and reads
+     *                        it.
+     * @param newContact      Boolean value. If set to true new contacts is being
+     *                        creating and it will be saved in different folder
+     *                        until user enters command to save it.
+     * @exception IOException          On read file error.
+     * @exception InterruptedException On error.
+     */
     public static void editContact(Scanner sc, String contactFilename, boolean newContact) {
         try {
             boolean goBack = false;
@@ -304,6 +357,7 @@ class ContactsApp {
                     }
                 } else {
                     System.out.println("\n:back - Exit editing mode");
+                    System.out.println(":home - Go home");
                     System.out.println(":quit - Quit");
                     System.out.println(
                             "\nValues are going to be saved as you edit them.");
@@ -364,6 +418,8 @@ class ContactsApp {
                         case ":back":
                             goBack = true;
                             break;
+                        case ":home":
+                            main(null);
                         case ":quit":
                             System.out.print("Quitting.");
                             System.exit(0);
@@ -381,6 +437,23 @@ class ContactsApp {
         }
     }
 
+    /**
+     * Update Contact method is used for updating specific file. When passed
+     * with all required arguments it updates that file.
+     * 
+     * @param personalID       This value is used also for creating that file.
+     *                         Filename
+     *                         will be personalID.txt (mandatory value).
+     * @param firstName        First name (mandatory value).
+     * @param lastName         Last name (mandatory value).
+     * @param phoneNumber      Phone number (mandatory value).
+     * @param address          Address.
+     * @param email            Email address.
+     * @param temporaryContact Boolean value. If set to true it will save contact in
+     *                         temporary folder until user enters command to save
+     *                         it.
+     * @exception IOException On read file error.
+     */
     public static void updateContact(String personalID, String firstName, String lastName, String phoneNumber,
             String address, String email, boolean temporaryContact) {
         try {
@@ -410,12 +483,24 @@ class ContactsApp {
         }
     }
 
+    /**
+     * Print Header method is user in every other method. It just prints the
+     * header.
+     * 
+     * @param tab This value will be printed on header.
+     */
     public static void printHeader(String tab) {
         System.out.println("----------------");
         System.out.println("- Contacts App -");
         System.out.println("----------------\n" + tab + "\n");
     }
 
+    /**
+     * Delete Contact method is used for deleteing that specific contact file.
+     * 
+     * @param contactFilename String filename. Deletes that specific file competely.
+     * @exception InterruptedException On error.
+     */
     public static void deleteContact(String contactFilename) {
         try {
             File contact = new File("./contacts/" + contactFilename);
@@ -434,6 +519,11 @@ class ContactsApp {
 
     }
 
+    /**
+     * Clear Temp Folder method is used for removing all files in temp folder.
+     * It runs everytime app opens.
+     * 
+     */
     public static void clearTempFolder() {
         File dir = new File("./contacts/temp");
         for (File file : dir.listFiles())
@@ -441,6 +531,12 @@ class ContactsApp {
                 file.delete();
     }
 
+    /**
+     * Clear Console method is used for keeping console output clean. It runs
+     * everytime method starts over. It checks for OS because Linux has different
+     * command of clering console.
+     * 
+     */
     public static void clearConsole() {
         try {
             if (System.getProperty("os.name").contains("Windows"))
